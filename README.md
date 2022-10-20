@@ -1,5 +1,5 @@
-python-docker
-=============
+Python
+------
 
 Dockerfile for Python projects.
 

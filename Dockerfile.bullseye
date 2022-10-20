@@ -1,16 +1,18 @@
 
-FROM bitnoize/debian:bullseye
+FROM ghcr.io/bitnoize/debian:bullseye
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN set -eux; \
-    # Fake user
-    groupadd -g 1000 dummy; \
-    useradd -M -d /home/dummy -s /bin/bash -g 1000 -u 1000 dummy; \
-    usermod -a -G staff dummy; \
-    mkdir -p /home/dummy; \
-    chown dummy:dummy /home/dummy; \
-    chmod 750 /home/dummy
+    # Unprivileged user
+    groupadd -g 1000 python; \
+    useradd -M -d /var/lib/python -s /bin/bash -g 1000 -u 1000 python; \
+    usermod -a -G tty,staff python; \
+    mkdir -m 0750 /var/lib/python; \
+    chown python:python /var/lib/python
+
+COPY docker-entrypoint.sh /sbin/entrypoint.sh
+ENTRYPOINT ["entrypoint.sh"]
 
 RUN set -eux; \
     # Debian packages
@@ -20,13 +22,12 @@ RUN set -eux; \
         libffi-dev libssl-dev \
         python3-pip python3-dev python3-setuptools python3-wheel python3-apt; \
     # Clean-up
-    rm -rf /usr/share/doc/*;  \
-    rm -rf /usr/share/info/*; \
-    rm -rf /usr/share/man/*;  \
-    rm -rf /var/lib/apt/lists/*
-
-COPY docker-entrypoint.sh /sbin/entrypoint.sh
-ENTRYPOINT ["entrypoint.sh"]
+    rm -rf \
+        /var/www/* \
+        /usr/share/doc/* \
+        /usr/share/info/* \
+        /usr/share/man/* \
+        /var/lib/apt/lists/*
 
 CMD ["python"]
 

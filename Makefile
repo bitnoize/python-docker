@@ -1,5 +1,5 @@
 
-IMAGENAME := bitnoize/python
+IMAGENAME := ghcr.io/bitnoize/python
 
 .PHONY: help build rebuild push pull
 
