@@ -11,7 +11,7 @@ if [ "$(id -u)" = "0" ]; then
     groupmod -g "$GID" python
   fi
 
-  chown python:python -R /var/lib/python
+  chown python:python /var/lib/python
 
   if [ -d "/lib/entrypoint" ]; then
     run-parts -v --regex '.*sh$' /lib/entrypoint
