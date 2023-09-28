@@ -1,5 +1,5 @@
 
-FROM ghcr.io/bitnoize/debian:bullseye
+FROM ghcr.io/bitnoize/debian:bookworm
 
 LABEL org.opencontainers.image.source=https://github.com/bitnoize/python-docker
 
@@ -40,5 +40,5 @@ RUN set -eux; \
     # Smoke tests
     python3 --version
 
-CMD ["python3"]
+CMD ["/usr/bin/python3"]
 
